@@ -1,17 +1,16 @@
 package main
 
 import (
-  "go-bikeme/bicing"
-  "go-bikeme/capitalbikeshare"
-  "fmt"
+	"fmt"
+	"go-bikeme/bicing"
+	"go-bikeme/capitalbikeshare"
 )
 
 func main() {
 	json := bicing.Stations()
-	stations := parser.Parse(json)
+	stations := bicing.Parse(json)
+	fmt.Printf("There are %d stations in the Bicing system!\n", len(stations))
 
-	fmt.Println("There are %d stations in the Bicing system!\n", len(stations))
-
-	stations := capitalbikeshare.Stations()
+	stations = capitalbikeshare.Stations()
 	fmt.Printf("There are %d stations in the Capital Bikeshare system!\n", len(stations))
 }
