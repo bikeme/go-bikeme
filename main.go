@@ -1,8 +1,8 @@
 package main
 
 import (
-  "bikeme/bicing"
-  "bikeme/bicing/parser"
+  "go-bikeme/bicing"
+  "go-bikeme/bicing/parser"
   "fmt"
 )
 
