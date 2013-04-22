@@ -1,7 +1,7 @@
 package parser
 
 import (
-  "bikeme/station"
+  "go-bikeme/station"
   "encoding/json"
   "strconv"
 )
