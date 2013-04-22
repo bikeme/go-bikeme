@@ -14,7 +14,7 @@ Create a `src/` directory:
 
 Clone the repo inside the `src/` directory:
 
-    git clone git@github.com:damselem/go-bicing.git
+    git clone git@github.com:damselem/go-bikeme.git
 
 Compile and run the application:
 
