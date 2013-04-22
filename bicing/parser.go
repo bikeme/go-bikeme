@@ -1,4 +1,4 @@
-package parser
+package bicing
 
 import (
   "go-bikeme/station"
@@ -8,9 +8,13 @@ import (
 
 func Parse(bicingJSON []byte) (stations []station.Station){
 
-  var stationsJSON []interface{}
+  var parsedJSON []interface{}
+  json.Unmarshal(bicingJSON, &parsedJSON)
 
-  json.Unmarshal(bicingJSON, &stationsJSON)
+  stationsString := parsedJSON[1].(map[string]interface{})["data"].(string)
+
+  var stationsJSON []interface{}
+  json.Unmarshal([]byte(stationsString), &stationsJSON)
 
   for _, stationJSON := range stationsJSON {
     stations = append(stations, createStation(stationJSON))
@@ -24,8 +28,7 @@ func createStation(stationJSON interface{}) station.Station {
 
   stationObject := station.Station{}
 
-  stationObject.StationId = foo["StationID"].(string)
-
+  stationObject.StationId   = foo["StationID"].(string)
   stationObject.StationName = foo["StationName"].(string)
 
   availableBikes, _ := strconv.ParseInt(foo["StationAvailableBikes"].(string), 10, 0)
