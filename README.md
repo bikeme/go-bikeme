@@ -18,5 +18,5 @@ Clone the repo inside the `src/` directory:
 
 Compile and run the application:
 
-    cd ~/Documents/mygo/src/go-bicing
+    cd ~/Documents/mygo/src/go-bikeme
     go run main.go
