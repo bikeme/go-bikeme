@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-const URL string = "https://www.bicing.cat/localizaciones/getJsonObject.php"
+const URL string = "https://www.bicing.cat/es/formmap/getJsonObject"
 
 func Stations() (body []byte) {
 	response, _ := http.Get(URL)
