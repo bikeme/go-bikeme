@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-bikeme/bicing"
 	"go-bikeme/capitalbikeshare"
+	"go-bikeme/telofan"
 )
 
 func main() {
@@ -13,4 +14,7 @@ func main() {
 
 	stations = capitalbikeshare.Stations()
 	fmt.Printf("There are %d stations in the Capital Bikeshare system!\n", len(stations))
+
+	stations = telofan.Stations()
+	fmt.Printf("There are %d stations in the TelOfan system!\n", len(stations))
 }
