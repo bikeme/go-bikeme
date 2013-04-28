@@ -9,17 +9,17 @@ import (
 )
 
 const URL string = "http://www.tel-o-fun.co.il:2470/ExternalWS/Geo.asmx"
-const SOAP_QUERY string = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">" +
-                              "<soapenv:Header/>" +
-                              "<soapenv:Body>" +
-                                "<tem:GetNearestStations>" +
-                                  "<tem:longitude>%s</tem:longitude>" +
-                                  "<tem:langitude>%s</tem:langitude>" +
-                                  "<tem:radius>%v</tem:radius>" +
-                                  "<tem:maxResults>%v</tem:maxResults>" +
-                                "</tem:GetNearestStations>" +
-                              "</soapenv:Body>" +
-                           "</soapenv:Envelope>"
+const SOAP_QUERY string = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+                              <soapenv:Header/>
+                              <soapenv:Body>
+                                <tem:GetNearestStations>
+                                  <tem:longitude>%s</tem:longitude>
+                                  <tem:langitude>%s</tem:langitude>
+                                  <tem:radius>%v</tem:radius>
+                                  <tem:maxResults>%v</tem:maxResults>
+                                </tem:GetNearestStations>
+                              </soapenv:Body>
+                           </soapenv:Envelope>`
 const TEL_AVIV_CENTER_LONGITUDE string = "32.071876"
 const TEL_AVIV_CENTER_LATITUDE string = "34.7789"
 const RADIOUS int = 15000
