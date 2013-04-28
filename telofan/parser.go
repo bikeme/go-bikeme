@@ -54,9 +54,9 @@ type SoapEnvelope struct {
     Body    SoapBody  "soap:Body"
 }
 
-func Parse(capitalbikshareXML []byte) (stations []station.Station) {
+func Parse(telofanSoapResponse []byte) (stations []station.Station) {
   envelope := &SoapEnvelope{}
-  xml.NewDecoder(bytes.NewReader(capitalbikshareXML)).Decode(envelope)
+  xml.NewDecoder(bytes.NewReader(telofanSoapResponse)).Decode(envelope)
 
   if envelope.Body.Fault.Message != "" {
   fmt.Printf("Xml Fault:\n %v \n", envelope.Body.Fault.Message)
