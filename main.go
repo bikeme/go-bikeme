@@ -2,19 +2,18 @@ package main
 
 import (
 	"fmt"
-	"go-bikeme/bicing"
-	"go-bikeme/capitalbikeshare"
-	"go-bikeme/telofun"
+	"go-bikeme/bikeshareservice"
 )
 
 func main() {
-	json := bicing.Stations()
-	stations := bicing.Parse(json)
-	fmt.Printf("There are %d stations in the Bicing system!\n", len(stations))
-
-	stations = capitalbikeshare.Stations()
-	fmt.Printf("There are %d stations in the Capital Bikeshare system!\n", len(stations))
-
-	stations = telofun.Stations()
-	fmt.Printf("There are %d stations in the TelOfun system!\n", len(stations))
+	services := []bikeshareservice.IService{&bikeshareservice.BicingService{}, &bikeshareservice.CapitalBikeShareService{}, &bikeshareservice.TelOFunService{}}
+	for _, service := range services {
+	  service.Init()
+	  stations, err := service.Stations()
+	  if err != nil {
+		  fmt.Printf("#main() received an error: '%s'\n", err.Error())
+		  return
+	  }
+	  fmt.Printf("There are %d stations in the %T system!\n", len(stations), service)
+	}
 }

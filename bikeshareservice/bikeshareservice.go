@@ -35,6 +35,7 @@ func (service *BaseService) Stations() (stations []station.Station, err error) {
 		return
 	}
 
+	defer response.Body.Close()
 	bytesResponse, err := ioutil.ReadAll(response.Body) // probably not efficient, done because the stream isn't always a pure XML stream and I have to fix things (not shown here)
 	if err != nil {
 		fmt.Printf("An error: '%s', occured\n", err.Error())
