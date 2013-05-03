@@ -2,6 +2,8 @@ package bikeshareservice
 
 import (
 	"fmt"
+	"github.com/stretchrcom/testify/assert"
+	"github.com/stretchrcom/testify/mock"
 	"go-bikeme/station"
 	"io"
 	"net/http"
@@ -11,86 +13,81 @@ import (
 func Test_NotInitializedError(t *testing.T) {
 	service := BaseService{}
 	_, err := service.Stations()
-	if err == nil || err.Error() != "IService is not initialized" {
-		t.Error("BaseService does not enforce initialization")
-	}
+
+	assert.Equal(t, err.Error(), "IService is not initialized", "BaseService does not enforce initialization")
 }
 
 func Test_InitIsAbstract(t *testing.T) {
 	service := BaseService{}
 	err := service.Init()
-	if err == nil || err.Error() != "Method Init() of IService is not implemented" {
-		t.Error("Init() method is not abstract")
-	}
+
+	assert.Equal(t, err.Error(), "Method Init() of IService is not implemented", "Init() method is not abstract")
 }
 
 func Test_queryServiceIsAbstract(t *testing.T) {
 	service := BaseService{}
 	_, err := service.queryService()
 	fmt.Println(err.Error())
-	if err == nil || err.Error() != "Method queryService() of IService is not implemented for <nil>" {
-		t.Error("queryService method is not abstract")
-	}
+
+	assert.Equal(t, err.Error(), "Method queryService() of IService is not implemented for <nil>", "queryService() method is not abstract")
 }
 
 func Test_parseIsAbstract(t *testing.T) {
 	service := BaseService{}
 	_, err := service.parse(nil)
-	if err == nil || err.Error() != "Method parse(responseBytes []byte) of IService is not implemented for <nil>" {
-		t.Error("queryService method is not abstract")
-	}
+
+	assert.Equal(t, err.Error(), "Method parse(responseBytes []byte) of IService is not implemented for <nil>", "parse(responseBytes []byte) method is not abstract")
 }
 
 func Test_Stations(t *testing.T) {
-	mockService := mockService{}
-	mockService.Init()
-	_, err := mockService.Stations()
-	if err != nil {
-		t.Error("Stations returned an error")
-	}
+	service := BaseService{}
+	mockServiceImpl := new(MockedService)
+	service.serviceImpl = mockServiceImpl //Assign the mock IService implementation to serviceImpl
 
-	if mockService.queryServiceCallCounter != 1 {
-		t.Error(fmt.Sprintf("Expected 1 call to method queryService(), received: %v", mockService.queryServiceCallCounter))
-	}
+	//Create an HTTP response mock
+	mockReader := new(MockedReader)
+	mockReader.On("Read", [512]byte{}).Return(0, io.EOF)
+	mockReader.On("Close").Return(nil)
 
-	if mockService.parserCallCounter != 1 {
-		t.Error(fmt.Sprintf("Expected 1 call to method parse(responseBytes []byte), received: %v", mockService.parserCallCounter))
-	}
+	mockResponse := &http.Response{}
+	mockResponse.Body = mockReader
+
+	//Expect calls to queryService() and parse([]station.Station)
+	mockServiceImpl.On("queryService").Return(mockResponse, nil)
+	mockServiceImpl.On("parse", []byte{}).Return([]station.Station{}, nil)
+
+	service.Stations()
+
+	mockServiceImpl.Mock.AssertExpectations(t)
 }
 
 //The code below is a mock implementation of the IService interface for test purposes
-type mockService struct {
+type MockedService struct {
+	mock.Mock
 	BaseService
-	queryServiceCallCounter int
-	parserCallCounter       int
 }
 
-func (service *mockService) Init() (err error) {
-	service.serviceImpl = service
-	service.queryServiceCallCounter = 0
-	service.parserCallCounter = 0
-	return nil
+func (m *MockedService) queryService() (response *http.Response, err error) {
+	args := m.Mock.Called()
+	return args.Get(0).(*http.Response), args.Error(1)
 }
 
-func (service *mockService) queryService() (response *http.Response, err error) {
-	service.queryServiceCallCounter++
-	mockResponse := &http.Response{}
-	mockResponse.Body = &mockResponseBody{}
-	return mockResponse, nil
-}
-
-func (service *mockService) parse(responseBytes []byte) (stations []station.Station, err error) {
-	service.parserCallCounter++
-	return []station.Station{}, nil
+func (m *MockedService) parse(responseBytes []byte) (stations []station.Station, err error) {
+	args := m.Mock.Called(responseBytes)
+	return args.Get(0).([]station.Station), args.Error(1)
 }
 
 //The mockResponseBody is used to read an array of bytes from the response
-type mockResponseBody struct{}
-
-func (response *mockResponseBody) Read(p []byte) (n int, err error) {
-	return 0, io.EOF
+type MockedReader struct {
+	mock.Mock
 }
 
-func (response *mockResponseBody) Close() error {
-	return nil
+func (m *MockedReader) Read(p []byte) (n int, err error) {
+	args := m.Mock.Called(p)
+	return args.Int(0), args.Error(1)
+}
+
+func (m *MockedReader) Close() error {
+	args := m.Mock.Called()
+	return args.Error(0)
 }
