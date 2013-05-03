@@ -18,7 +18,7 @@ func (service *CapitalBikeShareService) Init() (err error) {
 	return
 }
 
-func (service *CapitalBikeShareService) queryService() (resp *http.Response, err error) {
+func (service *CapitalBikeShareService) queryService() (response *http.Response, err error) {
 	return http.Get(CAPITAL_BIKE_SHARE_URL)
 }
 

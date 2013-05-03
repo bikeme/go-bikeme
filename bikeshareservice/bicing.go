@@ -18,7 +18,7 @@ func (service *BicingService) Init() (err error) {
 	return
 }
 
-func (service *BicingService) queryService() (resp *http.Response, err error) {
+func (service *BicingService) queryService() (response *http.Response, err error) {
 	return http.Get(BICING_URL)
 }
 

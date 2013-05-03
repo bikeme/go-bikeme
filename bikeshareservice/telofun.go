@@ -35,7 +35,7 @@ func (service *TelOFunService) Init() (err error) {
 	return
 }
 
-func (service *TelOFunService) queryService() (resp *http.Response, err error) {
+func (service *TelOFunService) queryService() (response *http.Response, err error) {
 	soapRequestBody := fmt.Sprintf(SOAP_QUERY, TEL_AVIV_CENTER_LONGITUDE, TEL_AVIV_CENTER_LATITUDE, RADIOUS, MAX_RESULTS)
 	return http.Post(TELOFUN_URL, "text/xml; charset=\"utf-8\"", bytes.NewBufferString(soapRequestBody))
 }
@@ -67,6 +67,7 @@ func (service *TelOFunService) createStation(soapStation SoapStation) station.St
 	return stationObject
 }
 
+// Define structs that match the TelOFun Xml response hierarchy
 type SoapStation struct {
 	XMLName            xml.Name `xml:"Station"`
 	Id                 string   `xml:"Station_id,attr"`

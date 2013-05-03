@@ -8,15 +8,15 @@ import (
 	"testing"
 )
 
-func TestNotInitializedError(t *testing.T) {
+func Test_NotInitializedError(t *testing.T) {
 	service := BaseService{}
 	_, err := service.Stations()
-	if err == nil || err.Error() != "IService is not intialized" {
+	if err == nil || err.Error() != "IService is not initialized" {
 		t.Error("BaseService does not enforce initialization")
 	}
 }
 
-func TestInitIsAbstract(t *testing.T) {
+func Test_InitIsAbstract(t *testing.T) {
 	service := BaseService{}
 	err := service.Init()
 	if err == nil || err.Error() != "Method Init() of IService is not implemented" {
@@ -24,7 +24,7 @@ func TestInitIsAbstract(t *testing.T) {
 	}
 }
 
-func TestqueryServiceIsAbstract(t *testing.T) {
+func Test_queryServiceIsAbstract(t *testing.T) {
 	service := BaseService{}
 	_, err := service.queryService()
 	fmt.Println(err.Error())
@@ -33,7 +33,7 @@ func TestqueryServiceIsAbstract(t *testing.T) {
 	}
 }
 
-func TestparseIsAbstract(t *testing.T) {
+func Test_parseIsAbstract(t *testing.T) {
 	service := BaseService{}
 	_, err := service.parse(nil)
 	if err == nil || err.Error() != "Method parse(responseBytes []byte) of IService is not implemented for <nil>" {
@@ -41,7 +41,7 @@ func TestparseIsAbstract(t *testing.T) {
 	}
 }
 
-func TestStations(t *testing.T) {
+func Test_Stations(t *testing.T) {
 	mockService := mockService{}
 	mockService.Init()
 	_, err := mockService.Stations()
@@ -72,7 +72,7 @@ func (service *mockService) Init() (err error) {
 	return nil
 }
 
-func (service *mockService) queryService() (resp *http.Response, err error) {
+func (service *mockService) queryService() (response *http.Response, err error) {
 	service.queryServiceCallCounter++
 	mockResponse := &http.Response{}
 	mockResponse.Body = &mockResponseBody{}
