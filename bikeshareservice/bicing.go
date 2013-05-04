@@ -11,15 +11,17 @@ const BICING_URL string = "https://www.bicing.cat/es/formmap/getJsonObject"
 
 type BicingService struct {
 	BaseService
+	serviceUrl string
 }
 
 func (service *BicingService) Init() (err error) {
 	service.serviceImpl = service
+	service.serviceUrl = BICING_URL
 	return
 }
 
 func (service *BicingService) queryService() (response *http.Response, err error) {
-	return http.Get(BICING_URL)
+	return http.Get(service.serviceUrl)
 }
 
 func (service *BicingService) parse(bicingJSON []byte) (stations []station.Station, err error) {
