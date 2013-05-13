@@ -9,23 +9,23 @@ import (
 
 const BICING_URL string = "https://www.bicing.cat/es/formmap/getJsonObject"
 
-type BicingService struct {
+type bicingService struct {
 	baseService
 	serviceUrl string
 }
 
-func NewBicingService() (*BicingService) {
-	service := BicingService{}
+func NewBicingService() (*bicingService) {
+	service := bicingService{}
 	service.serviceImpl = &service
 	service.serviceUrl = BICING_URL
 	return &service
 }
 
-func (service *BicingService) queryService() (response *http.Response, err error) {
+func (service *bicingService) queryService() (response *http.Response, err error) {
 	return http.Get(service.serviceUrl)
 }
 
-func (service *BicingService) parse(bicingJSON []byte) (stations []station.Station, err error) {
+func (service *bicingService) parse(bicingJSON []byte) (stations []station.Station, err error) {
 	var parsedJSON []interface{}
 	json.Unmarshal(bicingJSON, &parsedJSON)
 
@@ -41,7 +41,7 @@ func (service *BicingService) parse(bicingJSON []byte) (stations []station.Stati
 	return
 }
 
-func (service *BicingService) createStation(stationJSON interface{}) station.Station {
+func (service *bicingService) createStation(stationJSON interface{}) station.Station {
 	foo := stationJSON.(map[string]interface{})
 
 	stationObject := station.Station{}
