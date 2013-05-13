@@ -11,36 +11,36 @@ import (
 )
 
 func Test_NotInitializedError(t *testing.T) {
-	service := BaseService{}
+	service := baseService{}
 	_, err := service.Stations()
 
-	assert.Equal(t, err.Error(), "IService is not initialized", "BaseService does not enforce initialization")
+	assert.Equal(t, err.Error(), "Service is not initialized", "BaseService does not enforce initialization")
 }
 
 func Test_InitIsAbstract(t *testing.T) {
-	service := BaseService{}
+	service := baseService{}
 	err := service.Init()
 
-	assert.Equal(t, err.Error(), "Method Init() of IService is not implemented", "Init() method is not abstract")
+	assert.Equal(t, err.Error(), "Method Init() of Service is not implemented", "Init() method is not abstract")
 }
 
 func Test_queryServiceIsAbstract(t *testing.T) {
-	service := BaseService{}
+	service := baseService{}
 	_, err := service.queryService()
 	fmt.Println(err.Error())
 
-	assert.Equal(t, err.Error(), "Method queryService() of IService is not implemented for <nil>", "queryService() method is not abstract")
+	assert.Equal(t, err.Error(), "Method queryService() of Service is not implemented for <nil>", "queryService() method is not abstract")
 }
 
 func Test_parseIsAbstract(t *testing.T) {
-	service := BaseService{}
+	service := baseService{}
 	_, err := service.parse(nil)
 
-	assert.Equal(t, err.Error(), "Method parse(responseBytes []byte) of IService is not implemented for <nil>", "parse(responseBytes []byte) method is not abstract")
+	assert.Equal(t, err.Error(), "Method parse(responseBytes []byte) of Service is not implemented for <nil>", "parse(responseBytes []byte) method is not abstract")
 }
 
 func Test_Stations(t *testing.T) {
-	service := BaseService{}
+	service := baseService{}
 	mockServiceImpl := new(MockedService)
 	service.serviceImpl = mockServiceImpl //Assign the mock IService implementation to serviceImpl
 
@@ -64,7 +64,7 @@ func Test_Stations(t *testing.T) {
 //The code below is a mock implementation of the IService interface for test purposes
 type MockedService struct {
 	mock.Mock
-	BaseService
+	baseService
 }
 
 func (m *MockedService) queryService() (response *http.Response, err error) {

@@ -8,26 +8,25 @@ import (
 	"net/http"
 )
 
-// The IService interface will declare methods required to fetch stations data from a bike share service
-type IService interface {
-	Init() (err error)
+// The Service interface will declare methods required to fetch stations data from a bike share service
+type Service interface {
 	Stations() (stations []station.Station, err error)
 	queryService() (response *http.Response, err error)
 	parse(responseBytes []byte) (stations []station.Station, err error)
 }
 
 // The BaseService abstract type will implement the template for fetching and parsing stations data
-type BaseService struct {
-	serviceImpl IService
+type baseService struct {
+	serviceImpl Service
 }
 
-func (service *BaseService) Init() (err error) {
-	return errors.New("Method Init() of IService is not implemented")
+func (service *baseService) Init() (err error) {
+	return errors.New("Method Init() of Service is not implemented")
 }
 
-func (service *BaseService) Stations() (stations []station.Station, err error) {
+func (service *baseService) Stations() (stations []station.Station, err error) {
 	if service.serviceImpl == nil {
-		return nil, errors.New("IService is not initialized")
+		return nil, errors.New("Service is not initialized")
 	}
 	response, err := service.serviceImpl.queryService()
 	if err != nil {
@@ -47,10 +46,10 @@ func (service *BaseService) Stations() (stations []station.Station, err error) {
 	return
 }
 
-func (service *BaseService) queryService() (response *http.Response, err error) {
-	return nil, errors.New(fmt.Sprintf("Method queryService() of IService is not implemented for %T", service.serviceImpl))
+func (service *baseService) queryService() (response *http.Response, err error) {
+	return nil, errors.New(fmt.Sprintf("Method queryService() of Service is not implemented for %T", service.serviceImpl))
 }
 
-func (service *BaseService) parse(responseBytes []byte) (stations []station.Station, err error) {
-	return nil, errors.New(fmt.Sprintf("Method parse(responseBytes []byte) of IService is not implemented for %T", service.serviceImpl))
+func (service *baseService) parse(responseBytes []byte) (stations []station.Station, err error) {
+	return nil, errors.New(fmt.Sprintf("Method parse(responseBytes []byte) of Service is not implemented for %T", service.serviceImpl))
 }

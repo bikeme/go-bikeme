@@ -27,12 +27,13 @@ const RADIOUS int = 15000
 const MAX_RESULTS int = 250
 
 type TelOFunService struct {
-	BaseService
+	baseService
 }
 
-func (service *TelOFunService) Init() (err error) {
-	service.serviceImpl = service
-	return
+func NewTelOFunService() (*TelOFunService) {
+	service := TelOFunService{}
+	service.serviceImpl = &service
+	return &service
 }
 
 func (service *TelOFunService) queryService() (response *http.Response, err error) {

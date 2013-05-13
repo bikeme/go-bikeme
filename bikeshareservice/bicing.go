@@ -10,14 +10,15 @@ import (
 const BICING_URL string = "https://www.bicing.cat/es/formmap/getJsonObject"
 
 type BicingService struct {
-	BaseService
+	baseService
 	serviceUrl string
 }
 
-func (service *BicingService) Init() (err error) {
-	service.serviceImpl = service
+func NewBicingService() (*BicingService) {
+	service := BicingService{}
+	service.serviceImpl = &service
 	service.serviceUrl = BICING_URL
-	return
+	return &service
 }
 
 func (service *BicingService) queryService() (response *http.Response, err error) {

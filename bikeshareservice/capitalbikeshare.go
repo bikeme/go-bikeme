@@ -10,12 +10,13 @@ import (
 const CAPITAL_BIKE_SHARE_URL string = "http://www.capitalbikeshare.com/data/stations/bikeStations.xml"
 
 type CapitalBikeShareService struct {
-	BaseService
+	baseService
 }
 
-func (service *CapitalBikeShareService) Init() (err error) {
-	service.serviceImpl = service
-	return
+func NewCapitalBikeShareService() (*CapitalBikeShareService) {
+	service := CapitalBikeShareService{}
+	service.serviceImpl = &service
+	return &service
 }
 
 func (service *CapitalBikeShareService) queryService() (response *http.Response, err error) {
