@@ -20,10 +20,6 @@ type baseService struct {
 	serviceImpl Service
 }
 
-func (service *baseService) Init() (err error) {
-	return errors.New("Method Init() of Service is not implemented")
-}
-
 func (service *baseService) Stations() (stations []station.Station, err error) {
 	if service.serviceImpl == nil {
 		return nil, errors.New("Service is not initialized")

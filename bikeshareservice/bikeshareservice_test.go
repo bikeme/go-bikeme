@@ -17,13 +17,6 @@ func Test_NotInitializedError(t *testing.T) {
 	assert.Equal(t, err.Error(), "Service is not initialized", "BaseService does not enforce initialization")
 }
 
-func Test_InitIsAbstract(t *testing.T) {
-	service := baseService{}
-	err := service.Init()
-
-	assert.Equal(t, err.Error(), "Method Init() of Service is not implemented", "Init() method is not abstract")
-}
-
 func Test_queryServiceIsAbstract(t *testing.T) {
 	service := baseService{}
 	_, err := service.queryService()
