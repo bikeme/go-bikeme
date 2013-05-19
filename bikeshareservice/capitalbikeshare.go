@@ -9,20 +9,21 @@ import (
 
 const CAPITAL_BIKE_SHARE_URL string = "http://www.capitalbikeshare.com/data/stations/bikeStations.xml"
 
-type CapitalBikeShareService struct {
-	BaseService
+type capitalBikeShareService struct {
+	baseService
 }
 
-func (service *CapitalBikeShareService) Init() (err error) {
-	service.serviceImpl = service
-	return
+func NewCapitalBikeShareService() (*capitalBikeShareService) {
+	service := capitalBikeShareService{}
+	service.serviceImpl = &service
+	return &service
 }
 
-func (service *CapitalBikeShareService) queryService() (response *http.Response, err error) {
+func (service *capitalBikeShareService) queryService() (response *http.Response, err error) {
 	return http.Get(CAPITAL_BIKE_SHARE_URL)
 }
 
-func (service *CapitalBikeShareService) parse(capitalbikshareXML []byte) (stations []station.Station, err error) {
+func (service *capitalBikeShareService) parse(capitalbikshareXML []byte) (stations []station.Station, err error) {
 	xmlStations := &XMLStations{}
 
 	xml.NewDecoder(bytes.NewReader(capitalbikshareXML)).Decode(xmlStations)
@@ -34,7 +35,7 @@ func (service *CapitalBikeShareService) parse(capitalbikshareXML []byte) (statio
 	return
 }
 
-func (service *CapitalBikeShareService) createStation(xmlStation XMLStation) station.Station {
+func (service *capitalBikeShareService) createStation(xmlStation XMLStation) station.Station {
 	stationObject := station.Station{}
 	stationObject.StationId = xmlStation.Id
 	stationObject.StationName = xmlStation.Name

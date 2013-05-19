@@ -26,21 +26,22 @@ const TEL_AVIV_CENTER_LATITUDE string = "34.7789"
 const RADIOUS int = 15000
 const MAX_RESULTS int = 250
 
-type TelOFunService struct {
-	BaseService
+type telOFunService struct {
+	baseService
 }
 
-func (service *TelOFunService) Init() (err error) {
-	service.serviceImpl = service
-	return
+func NewTelOFunService() (*telOFunService) {
+	service := telOFunService{}
+	service.serviceImpl = &service
+	return &service
 }
 
-func (service *TelOFunService) queryService() (response *http.Response, err error) {
+func (service *telOFunService) queryService() (response *http.Response, err error) {
 	soapRequestBody := fmt.Sprintf(SOAP_QUERY, TEL_AVIV_CENTER_LONGITUDE, TEL_AVIV_CENTER_LATITUDE, RADIOUS, MAX_RESULTS)
 	return http.Post(TELOFUN_URL, "text/xml; charset=\"utf-8\"", bytes.NewBufferString(soapRequestBody))
 }
 
-func (service *TelOFunService) parse(telofunSoapResponse []byte) (stations []station.Station, err error) {
+func (service *telOFunService) parse(telofunSoapResponse []byte) (stations []station.Station, err error) {
 	envelope := &SoapEnvelope{}
 	xml.NewDecoder(bytes.NewReader(telofunSoapResponse)).Decode(envelope)
 
@@ -56,7 +57,7 @@ func (service *TelOFunService) parse(telofunSoapResponse []byte) (stations []sta
 	return
 }
 
-func (service *TelOFunService) createStation(soapStation SoapStation) station.Station {
+func (service *telOFunService) createStation(soapStation SoapStation) station.Station {
 	stationObject := station.Station{}
 
 	stationObject.StationId = soapStation.Id

@@ -6,9 +6,8 @@ import (
 )
 
 func main() {
-	services := []bikeshareservice.IService{&bikeshareservice.BicingService{}, &bikeshareservice.CapitalBikeShareService{}, &bikeshareservice.TelOFunService{}}
+	services := []bikeshareservice.Service{bikeshareservice.NewBicingService(), bikeshareservice.NewCapitalBikeShareService(), bikeshareservice.NewTelOFunService()}
 	for _, service := range services {
-		service.Init()
 		stations, err := service.Stations()
 		if err != nil {
 			fmt.Printf("#main() received an error: '%s'\n", err.Error())

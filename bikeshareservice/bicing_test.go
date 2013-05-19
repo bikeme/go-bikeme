@@ -20,8 +20,7 @@ func Test_downloadTweets(t *testing.T) {
 	}))
 	defer testServer.Close()
 
-	bicing := &BicingService{}
-	bicing.Init()
+	bicing := NewBicingService()
 	bicing.serviceUrl = testServer.URL //Set the Bicing service url to the test server Url
 
 	stations, err := bicing.Stations()
