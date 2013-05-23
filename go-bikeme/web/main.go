@@ -8,6 +8,7 @@ import (
     "go-bikeme/bikeshareservice"
 	"appengine/datastore"
     "html/template"
+    "time"
 )
 
 func init() {
@@ -35,7 +36,7 @@ const stationsTemplateHTML = `
 <html>
   <body>
     {{range .}}
-        <p><b>{{.StationName}}</b> wrote:</p>
+        <p><b>{{.StationName}}</b>.</p>
     {{end}}
   </body>
 </html>
@@ -50,11 +51,11 @@ func update_stations(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "%T received an error: '%s'\n", service, err.Error())
 			continue
 		}
-		updateTime = time.Now()
-		keys := []datastore.Key
-		for station := stations  {
+		updateTime := time.Now()
+		// keys = datastore.Key []datastore.Key
+		for _, station := range stations  {
 			station.LastUpdate = updateTime
-			datastore.Put(c, datastore.NewIncompleteKey(c, "Station", station.StationId), &station)
+			datastore.Put(c, datastore.NewKey(c, "Station", station.StationId, 0, nil), &station)
 		}
 		// Future Code	
 		//	keys = append(keys, datastore.NewIncompleteKey(c, "Station", station.StationId))
