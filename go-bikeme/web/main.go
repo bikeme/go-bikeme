@@ -43,7 +43,7 @@ const stationsTemplateHTML = `
 
 func update_stations(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	services := []bikeshareservice.Service{bikeshareservice.NewBicingService(), bikeshareservice.NewCapitalBikeShareService(), bikeshareservice.NewTelOFunService()}
+	services := []bikeshareservice.Service{bikeshareservice.NewBicingService(c), bikeshareservice.NewCapitalBikeShareService(c), bikeshareservice.NewTelOFunService(c)}
 	for _, service := range services {
 		stations, err := service.Stations()
 		if err != nil {

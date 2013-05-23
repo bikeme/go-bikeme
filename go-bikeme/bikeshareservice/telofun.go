@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"go-bikeme/station"
+	"appengine"
+	"appengine/urlfetch"
 	"net/http"
 )
 
@@ -30,15 +32,17 @@ type telOFunService struct {
 	baseService
 }
 
-func NewTelOFunService() (*telOFunService) {
+func NewTelOFunService(context appengine.Context) (*telOFunService) {
 	service := telOFunService{}
+	service.context = context
 	service.serviceImpl = &service
 	return &service
 }
 
 func (service *telOFunService) queryService() (response *http.Response, err error) {
 	soapRequestBody := fmt.Sprintf(SOAP_QUERY, TEL_AVIV_CENTER_LONGITUDE, TEL_AVIV_CENTER_LATITUDE, RADIOUS, MAX_RESULTS)
-	return http.Post(TELOFUN_URL, "text/xml; charset=\"utf-8\"", bytes.NewBufferString(soapRequestBody))
+	client := urlfetch.Client(service.context)
+	return client.Post(TELOFUN_URL, "text/xml; charset=\"utf-8\"", bytes.NewBufferString(soapRequestBody))
 }
 
 func (service *telOFunService) parse(telofunSoapResponse []byte) (stations []station.Station, err error) {
