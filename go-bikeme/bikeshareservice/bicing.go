@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"appengine"
+	"appengine/urlfetch"
 )
 
 const BICING_URL string = "https://www.bicing.cat/es/formmap/getJsonObject"
@@ -16,15 +18,17 @@ type bicingService struct {
 	serviceUrl string
 }
 
-func NewBicingService() (*bicingService) {
+func NewBicingService(context appengine.Context) (*bicingService) {
 	service := bicingService{}
+	service.context = context
 	service.serviceImpl = &service
 	service.serviceUrl = BICING_URL
 	return &service
 }
 
 func (service *bicingService) queryService() (response *http.Response, err error) {
-	return http.Get(service.serviceUrl)
+	client := urlfetch.Client(service.context)
+	return client.Get(service.serviceUrl)
 }
 
 func (service *bicingService) parse(bicingJSON []byte) (stations []station.Station, err error) {
