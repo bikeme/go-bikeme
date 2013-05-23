@@ -42,13 +42,24 @@ const stationsTemplateHTML = `
 `
 
 func update_stations(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
 	services := []bikeshareservice.Service{bikeshareservice.NewBicingService(), bikeshareservice.NewCapitalBikeShareService(), bikeshareservice.NewTelOFunService()}
 	for _, service := range services {
 		stations, err := service.Stations()
 		if err != nil {
-			fmt.Fprintf(w, "#main() received an error: '%s'\n", err.Error())
-			return
+			fmt.Fprintf(w, "%T received an error: '%s'\n", service, err.Error())
+			continue
 		}
+		updateTime = time.Now()
+		keys := []datastore.Key
+		for station := stations  {
+			station.LastUpdate = updateTime
+			datastore.Put(c, datastore.NewIncompleteKey(c, "Station", station.StationId), &station)
+		}
+		// Future Code	
+		//	keys = append(keys, datastore.NewIncompleteKey(c, "Station", station.StationId))
+		//}
+		//datastore.PutMulti(c, keys, stations)
 		fmt.Fprintf(w,"There are %d stations in the %T system!\n", len(stations), service)
 	}
 	fmt.Fprint(w, "done")
