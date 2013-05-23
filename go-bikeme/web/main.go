@@ -2,14 +2,44 @@ package web
 
 import (
 	"fmt"
+	"appengine"
 	"net/http"
-	"go-bikeme/bikeshareservice"
+	"go-bikeme/station"
+    "go-bikeme/bikeshareservice"
+	"appengine/datastore"
+    "html/template"
 )
 
 func init() {
-	http.HandleFunc("/", handler)
 	http.HandleFunc("/update_stations", update_stations)
+	http.HandleFunc("/list_stations", list_stations)
+	http.HandleFunc("/", handler)
 }
+
+func list_stations(w http.ResponseWriter, r *http.Request) {
+    c := appengine.NewContext(r)
+    q := datastore.NewQuery("Station").Limit(10)
+    stations := make([]station.Station, 0, 10)
+    if _, err := q.GetAll(c, &stations); err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    if err := stationsTemplate.Execute(w, stations); err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+}
+
+var stationsTemplate = template.Must(template.New("listing").Parse(stationsTemplateHTML))
+
+const stationsTemplateHTML = `
+<html>
+  <body>
+    {{range .}}
+        <p><b>{{.StationName}}</b> wrote:</p>
+    {{end}}
+  </body>
+</html>
+`
 
 func update_stations(w http.ResponseWriter, r *http.Request) {
 	services := []bikeshareservice.Service{bikeshareservice.NewBicingService(), bikeshareservice.NewCapitalBikeShareService(), bikeshareservice.NewTelOFunService()}
