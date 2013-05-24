@@ -3,6 +3,7 @@ package bikeshareservice
 import (
 	"bytes"
 	"encoding/xml"
+	"go-bikeme/location"
 	"go-bikeme/station"
 	"net/http"
 )
@@ -13,7 +14,7 @@ type capitalBikeShareService struct {
 	baseService
 }
 
-func NewCapitalBikeShareService() (*capitalBikeShareService) {
+func NewCapitalBikeShareService() *capitalBikeShareService {
 	service := capitalBikeShareService{}
 	service.serviceImpl = &service
 	return &service
@@ -39,7 +40,7 @@ func (service *capitalBikeShareService) createStation(xmlStation XMLStation) sta
 	stationObject := station.Station{}
 	stationObject.StationId = xmlStation.Id
 	stationObject.StationName = xmlStation.Name
-
+	stationObject.Address = location.Address{"", "", "", "", location.Location{xmlStation.Lat, xmlStation.Long}}
 	stationObject.Status = station.Status{xmlStation.NbBikes, xmlStation.NbEmptyDocks}
 
 	return stationObject
@@ -54,8 +55,8 @@ type XMLStation struct {
 	XMLName      xml.Name `xml:"station"`
 	Id           string   `xml:"id"`
 	Name         string   `xml:"name"`
-	Lat          float32  `xml:"lat"`
-	Long         float32  `xml:"long"`
+	Lat          float64  `xml:"lat"`
+	Long         float64  `xml:"long"`
 	NbBikes      int64    `xml:"nbBikes"`
 	NbEmptyDocks int64    `xml:"nbEmptyDocks"`
 }

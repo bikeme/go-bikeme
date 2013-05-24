@@ -1,16 +1,8 @@
 package station
 
-type Position struct {
-	Longitude string
-	Latitude  string
-}
-
-type Address struct {
-	DistrictCode string
-	ZipCode      string
-	Street       string
-	Number       string
-}
+import (
+	"go-bikeme/location"
+)
 
 type Status struct {
 	AvailableBikes int64
@@ -20,7 +12,6 @@ type Status struct {
 type Station struct {
 	StationId   string
 	StationName string
-	Position    Position
 	Status      Status
-	Address     Address
+	Address     location.Address
 }
