@@ -19,16 +19,9 @@ func main() {
 		}
 		fmt.Printf("There are %d stations in the %T system!\n", len(stations), service)
 
-		from := location.Location{32.065174, 34.776449}
-		calculateDistanceToAllStations(from, stations)
+		from := location.Location{32.064592, 34.779711}
+		startTime := time.Now()
+		station.NearestStations(from, stations, 5)
+		fmt.Printf("Calculating distance to %v stations took %f seconds\n", len(stations), time.Since(startTime).Seconds())
 	}
-}
-
-func calculateDistanceToAllStations(from location.Location, toStations []station.Station) {
-	startTime := time.Now()
-	for _, station := range toStations {
-		from.DistanceInMeters(&station.Address.Location)
-		//fmt.Printf("%v meters meters to station:%s\n", distance, station.StationName)
-	}
-	fmt.Printf("Calculating distance to %v stations took %f seconds\n", len(toStations), time.Since(startTime).Seconds())
 }

@@ -30,7 +30,7 @@ func NewLocationFromString(lat string, lng string) Location {
 // Distance between two coordinates based on ‘haversine’ formula
 // Based on:  https://github.com/kellydunn/golang-geo/blob/master/point.go and http://www.movable-type.co.uk/scripts/latlong.html
 func (from *Location) DistanceInMeters(to *Location) int64 {
-	r := 6371.0 //m
+	r := 6378.14 //m
 	dLat := (to.Latitude - from.Latitude) * (math.Pi / 180.0)
 	dLon := (to.Longitude - from.Longitude) * (math.Pi / 180.0)
 
