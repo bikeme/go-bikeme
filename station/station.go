@@ -30,7 +30,7 @@ func NearestStations(location location.Location, stations []Station, count int) 
 	sortedStations := []Station{}
 	for i := 0; i < count; i++ {
 		sortedStations = append(sortedStations, stationDistances[i].station)
-		fmt.Printf("%v meters meters to station:%s, Location: %v\n", stationDistances[i].distance, stationDistances[i].station.StationName, stationDistances[i].station.Address.Location)
+		fmt.Printf("%v meters to station:%s, Location: %v\n", stationDistances[i].distance, stationDistances[i].station.StationName, stationDistances[i].station.Address.Location)
 	}
 	return sortedStations
 }

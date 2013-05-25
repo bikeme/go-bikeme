@@ -19,7 +19,7 @@ func Test_NearestStations(t *testing.T) {
 	stations = NearestStations(from, stations, 3)
 
 	assert.Equal(t, len(stations), 3, "NearestStations returned too many stations")
-	assert.Equal(t, stations[0].StationId, "3", "NearestStations returned did not sort stations correctly")
-	assert.Equal(t, stations[1].StationId, "5", "NearestStations returned did not sort stations correctly")
-	assert.Equal(t, stations[2].StationId, "2", "NearestStations returned did not sort stations correctly")
+	assert.Equal(t, stations[0].StationId, "3", "NearestStations did not sort stations correctly")
+	assert.Equal(t, stations[1].StationId, "5", "NearestStations did not sort stations correctly")
+	assert.Equal(t, stations[2].StationId, "2", "NearestStations did not sort stations correctly")
 }

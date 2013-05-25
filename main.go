@@ -10,7 +10,7 @@ import (
 
 func main() {
 	services := []bikeshareservice.Service{bikeshareservice.NewBicingService(), bikeshareservice.NewCapitalBikeShareService(), bikeshareservice.NewTelOFunService()}
-	//services := []bikeshareservice.Service{bikeshareservice.NewTelOFunService()}
+
 	for _, service := range services {
 		stations, err := service.Stations()
 		if err != nil {

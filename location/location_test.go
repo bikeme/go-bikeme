@@ -10,5 +10,5 @@ func Test_DistanceInMeters(t *testing.T) {
 	to := Location{32.082702, 34.772544}
 
 	distance := from.DistanceInMeters(&to)
-	assert.Equal(t, distance, 809, "DistanceInMeters return an unexpected result")
+	assert.Equal(t, distance, 809, "DistanceInMeters returned an unexpected result")
 }

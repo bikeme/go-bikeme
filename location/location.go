@@ -21,7 +21,6 @@ type Address struct {
 func NewLocationFromString(lat string, lng string) Location {
 	location := Location{}
 	location.Latitude, _ = strconv.ParseFloat(lat, 64)
-
 	location.Longitude, _ = strconv.ParseFloat(lng, 64)
 
 	return location
@@ -41,7 +40,6 @@ func (from *Location) DistanceInMeters(to *Location) int64 {
 	a2 := math.Sin(dLon/2) * math.Sin(dLon/2) * math.Cos(lat1) * math.Cos(lat2)
 
 	a := a1 + a2
-
 	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
 
 	return int64(r * c * 1000)
