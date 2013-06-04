@@ -12,12 +12,12 @@ import (
 )
 
 func init() {
-	http.HandleFunc("/update_stations", update_stations)
-	http.HandleFunc("/list_stations", list_stations)
+	http.HandleFunc("/update_stations", updateStations)
+	http.HandleFunc("/list_stations", listStations)
 	http.HandleFunc("/", handler)
 }
 
-func list_stations(w http.ResponseWriter, r *http.Request) {
+func listStations(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
     q := datastore.NewQuery("Station").Limit(10)
     stations := make([]station.Station, 0, 10)
@@ -42,7 +42,7 @@ const stationsTemplateHTML = `
 </html>
 `
 
-func update_stations(w http.ResponseWriter, r *http.Request) {
+func updateStations(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	services := []bikeshareservice.Service{bikeshareservice.NewBicingService(c), bikeshareservice.NewCapitalBikeShareService(c), bikeshareservice.NewTelOFunService(c)}
 	for _, service := range services {
