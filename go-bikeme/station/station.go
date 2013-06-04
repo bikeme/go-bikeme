@@ -1,5 +1,9 @@
 package station
 
+import (
+	"time"
+)
+
 type Position struct {
 	Longitude string
 	Latitude  string
@@ -20,6 +24,7 @@ type Status struct {
 type Station struct {
 	StationId   string
 	StationName string
+	LastUpdate  time.Time
 	Position    Position
 	Status      Status
 	Address     Address
