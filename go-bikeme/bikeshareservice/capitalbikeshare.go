@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/xml"
 	"go-bikeme/station"
+	"appengine"
+	"appengine/urlfetch"
 	"net/http"
 )
 
@@ -13,14 +15,16 @@ type capitalBikeShareService struct {
 	baseService
 }
 
-func NewCapitalBikeShareService() (*capitalBikeShareService) {
+func NewCapitalBikeShareService(context appengine.Context) (*capitalBikeShareService) {
 	service := capitalBikeShareService{}
+	service.context = context
 	service.serviceImpl = &service
 	return &service
 }
 
 func (service *capitalBikeShareService) queryService() (response *http.Response, err error) {
-	return http.Get(CAPITAL_BIKE_SHARE_URL)
+	client := urlfetch.Client(service.context)
+	return client.Get(CAPITAL_BIKE_SHARE_URL)
 }
 
 func (service *capitalBikeShareService) parse(capitalbikshareXML []byte) (stations []station.Station, err error) {
