@@ -3,6 +3,7 @@ package bikeshareservice
 import (
 	"bytes"
 	"encoding/json"
+	"go-bikeme/location"
 	"go-bikeme/station"
 	"net/http"
 	"strconv"
@@ -63,14 +64,18 @@ func (service *bicingService) createStation(bicingJsonStation bicingJsonStation)
 		availableDocks,
 	}
 
+	stationObject.Address = location.Address{"", "", "", "", location.NewLocationFromString(bicingJsonStation.Latitue, bicingJsonStation.Longitude)}
+
 	return stationObject
 }
 
 type bicingJsonStation struct {
-	StationID string `json:"StationID`
-	StationName string `json:"StationName`
-	StationAvailableBikes string `json:"StationAvailableBikes`
-	StationFreeSlot string `json:"StationFreeSlot`
+	StationID             string `json:"StationID"`
+	StationName           string `json:"StationName"`
+	StationAvailableBikes string `json:"StationAvailableBikes"`
+	StationFreeSlot       string `json:"StationFreeSlot"`
+	Latitue               string `json:"AddressGmapsLatitude"`
+	Longitude             string `json:"AddressGmapsLongitude"`
 }
 
 type bicingCommand struct {
