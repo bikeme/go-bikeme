@@ -1,12 +1,12 @@
 package bikeshareservice
 
 import (
+	"appengine"
+	"appengine/urlfetch"
 	"bytes"
 	"encoding/xml"
 	"go-bikeme/location"
 	"go-bikeme/station"
-	"appengine"
-	"appengine/urlfetch"
 	"net/http"
 )
 
@@ -16,7 +16,7 @@ type capitalBikeShareService struct {
 	baseService
 }
 
-func NewCapitalBikeShareService(context appengine.Context) (*capitalBikeShareService) {
+func NewCapitalBikeShareService(context appengine.Context) *capitalBikeShareService {
 	service := capitalBikeShareService{}
 	service.context = context
 	service.serviceImpl = &service

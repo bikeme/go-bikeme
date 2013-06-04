@@ -1,14 +1,14 @@
 package bikeshareservice
 
 import (
+	"appengine"
+	"appengine/urlfetch"
 	"bytes"
 	"encoding/xml"
 	"errors"
 	"fmt"
 	"go-bikeme/location"
 	"go-bikeme/station"
-	"appengine"
-	"appengine/urlfetch"
 	"net/http"
 )
 
@@ -33,7 +33,7 @@ type telOFunService struct {
 	baseService
 }
 
-func NewTelOFunService(context appengine.Context) (*telOFunService) {
+func NewTelOFunService(context appengine.Context) *telOFunService {
 	service := telOFunService{}
 	service.context = context
 	service.serviceImpl = &service

@@ -1,14 +1,14 @@
 package web
 
 import (
-	"fmt"
 	"appengine"
-	"net/http"
-	"go-bikeme/station"
-    "go-bikeme/bikeshareservice"
 	"appengine/datastore"
-    "html/template"
-    "time"
+	"fmt"
+	"go-bikeme/bikeshareservice"
+	"go-bikeme/station"
+	"html/template"
+	"net/http"
+	"time"
 )
 
 func init() {
@@ -18,16 +18,16 @@ func init() {
 }
 
 func listStations(w http.ResponseWriter, r *http.Request) {
-    c := appengine.NewContext(r)
-    q := datastore.NewQuery("Station").Limit(10)
-    stations := make([]station.Station, 0, 10)
-    if _, err := q.GetAll(c, &stations); err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-    if err := stationsTemplate.Execute(w, stations); err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-    }
+	c := appengine.NewContext(r)
+	q := datastore.NewQuery("Station").Limit(10)
+	stations := make([]station.Station, 0, 10)
+	if _, err := q.GetAll(c, &stations); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if err := stationsTemplate.Execute(w, stations); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 var stationsTemplate = template.Must(template.New("listing").Parse(stationsTemplateHTML))
@@ -53,7 +53,7 @@ func updateStations(w http.ResponseWriter, r *http.Request) {
 		}
 		updateTime := time.Now()
 		// keys = datastore.Key []datastore.Key
-		for _, station := range stations  {
+		for _, station := range stations {
 			station.LastUpdate = updateTime
 			datastore.Put(c, datastore.NewKey(c, "Station", station.StationId, 0, nil), &station)
 		}
@@ -61,11 +61,10 @@ func updateStations(w http.ResponseWriter, r *http.Request) {
 		//	keys = append(keys, datastore.NewIncompleteKey(c, "Station", station.StationId))
 		//}
 		//datastore.PutMulti(c, keys, stations)
-		fmt.Fprintf(w,"There are %d stations in the %T system!\n", len(stations), service)
+		fmt.Fprintf(w, "There are %d stations in the %T system!\n", len(stations), service)
 	}
 	fmt.Fprint(w, "done")
 }
-
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello, world!")

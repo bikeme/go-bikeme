@@ -1,10 +1,10 @@
 package station
 
 import (
-	"time"
 	"fmt"
 	"go-bikeme/location"
 	"sort"
+	"time"
 )
 
 type Status struct {

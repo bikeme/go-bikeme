@@ -1,6 +1,8 @@
 package bikeshareservice
 
 import (
+	"appengine"
+	"appengine/urlfetch"
 	"bytes"
 	"encoding/json"
 	"go-bikeme/location"
@@ -8,8 +10,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"appengine"
-	"appengine/urlfetch"
 )
 
 const BICING_URL string = "https://www.bicing.cat/es/formmap/getJsonObject"
@@ -19,7 +19,7 @@ type bicingService struct {
 	serviceUrl string
 }
 
-func NewBicingService(context appengine.Context) (*bicingService) {
+func NewBicingService(context appengine.Context) *bicingService {
 	service := bicingService{}
 	service.context = context
 	service.serviceImpl = &service
