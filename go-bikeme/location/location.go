@@ -29,18 +29,18 @@ func NewLocationFromString(lat string, lng string) Location {
 // Distance between two coordinates based on ‘haversine’ formula
 // Based on:  https://github.com/kellydunn/golang-geo/blob/master/point.go and http://www.movable-type.co.uk/scripts/latlong.html
 func (from *Location) DistanceInMeters(to *Location) int64 {
-	r := 6378.14 //m
-	dLat := (to.Latitude - from.Latitude) * (math.Pi / 180.0)
-	dLon := (to.Longitude - from.Longitude) * (math.Pi / 180.0)
+	radius := 6378.14 //earth radius in Km
+	dLat := (to.Latitude - from.Latitude) * (math.Pi / 180.0) //Delta latitude in radian
+	dLon := (to.Longitude - from.Longitude) * (math.Pi / 180.0) //Delta longitude in radian
 
-	lat1 := from.Latitude * (math.Pi / 180.0)
-	lat2 := to.Latitude * (math.Pi / 180.0)
+	fromLatRad := from.Latitude * (math.Pi / 180.0) //Latitude in radians
+	toLatRad := to.Latitude * (math.Pi / 180.0) //Latitude in radians
 
 	a1 := math.Sin(dLat/2) * math.Sin(dLat/2)
-	a2 := math.Sin(dLon/2) * math.Sin(dLon/2) * math.Cos(lat1) * math.Cos(lat2)
-
+	a2 := math.Sin(dLon/2) * math.Sin(dLon/2) * math.Cos(fromLatRad) * math.Cos(toLatRad)
 	a := a1 + a2
-	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
 
-	return int64(r * c * 1000)
+	circleDistance := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a)) // Great circle distance in radians
+
+	return int64(radius * circleDistance * 1000) //Multiply by 1000 to get distance in meters
 }
