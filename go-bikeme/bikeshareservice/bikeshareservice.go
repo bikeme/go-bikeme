@@ -4,7 +4,7 @@ import (
 	"appengine"
 	"errors"
 	"fmt"
-	"go-bikeme/station"
+	"go-bikeme/go-bikeme/station"
 	"io/ioutil"
 	"net/http"
 )

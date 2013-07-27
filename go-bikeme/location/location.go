@@ -8,20 +8,14 @@ import (
 type Location struct {
 	Latitude  float64
 	Longitude float64
+	Address   string
 }
 
-type Address struct {
-	DistrictCode string
-	ZipCode      string
-	Street       string
-	Number       string
-	Location     Location
-}
-
-func NewLocationFromString(lat string, lng string) Location {
+func NewLocationFromString(lat string, lng string, address string) Location {
 	location := Location{}
 	location.Latitude, _ = strconv.ParseFloat(lat, 64)
 	location.Longitude, _ = strconv.ParseFloat(lng, 64)
+	location.Address = address
 
 	return location
 }

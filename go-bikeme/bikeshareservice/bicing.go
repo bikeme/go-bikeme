@@ -5,8 +5,8 @@ import (
 	"appengine/urlfetch"
 	"bytes"
 	"encoding/json"
-	"go-bikeme/location"
-	"go-bikeme/station"
+	"go-bikeme/go-bikeme/location"
+	"go-bikeme/go-bikeme/station"
 	"net/http"
 	"strconv"
 	"strings"
@@ -64,7 +64,7 @@ func (service *bicingService) createStation(bicingJsonStation bicingJsonStation)
 		availableDocks,
 	}
 
-	stationObject.Address = location.Address{"", "", "", "", location.NewLocationFromString(bicingJsonStation.Latitue, bicingJsonStation.Longitude)}
+	stationObject.Location = location.NewLocationFromString(bicingJsonStation.Latitue, bicingJsonStation.Longitude, bicingJsonStation.StationName)
 
 	return stationObject
 }

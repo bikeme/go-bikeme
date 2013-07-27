@@ -2,7 +2,7 @@ package station
 
 import (
 	"fmt"
-	"go-bikeme/location"
+	"go-bikeme/go-bikeme/location"
 	"sort"
 	"time"
 )
@@ -17,13 +17,13 @@ type Station struct {
 	StationName string
 	LastUpdate  time.Time
 	Status      Status
-	Address     location.Address
+	Location    location.Location
 }
 
 func NearestStations(location location.Location, stations []Station, count int) []Station {
 	stationDistances := []stationDistance{}
 	for _, station := range stations {
-		distance := location.DistanceInMeters(&station.Address.Location)
+		distance := location.DistanceInMeters(&station.Location)
 		stationDistances = append(stationDistances, stationDistance{distance, station})
 	}
 
@@ -32,7 +32,7 @@ func NearestStations(location location.Location, stations []Station, count int) 
 	sortedStations := []Station{}
 	for i := 0; i < count; i++ {
 		sortedStations = append(sortedStations, stationDistances[i].station)
-		fmt.Printf("%v meters to station:%s, Location: %v\n", stationDistances[i].distance, stationDistances[i].station.StationName, stationDistances[i].station.Address.Location)
+		fmt.Printf("%v meters to station:%s, Location: %v\n", stationDistances[i].distance, stationDistances[i].station.StationName, stationDistances[i].station.Location)
 	}
 	return sortedStations
 }

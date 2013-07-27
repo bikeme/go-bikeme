@@ -5,8 +5,8 @@ import (
 	"appengine/urlfetch"
 	"bytes"
 	"encoding/xml"
-	"go-bikeme/location"
-	"go-bikeme/station"
+	"go-bikeme/go-bikeme/location"
+	"go-bikeme/go-bikeme/station"
 	"net/http"
 )
 
@@ -44,7 +44,7 @@ func (service *capitalBikeShareService) createStation(xmlStation XMLStation) sta
 	stationObject := station.Station{}
 	stationObject.StationId = xmlStation.Id
 	stationObject.StationName = xmlStation.Name
-	stationObject.Address = location.Address{"", "", "", "", location.Location{xmlStation.Lat, xmlStation.Long}}
+	stationObject.Location = location.Location{xmlStation.Lat, xmlStation.Long, xmlStation.Name}
 	stationObject.Status = station.Status{xmlStation.NbBikes, xmlStation.NbEmptyDocks}
 
 	return stationObject

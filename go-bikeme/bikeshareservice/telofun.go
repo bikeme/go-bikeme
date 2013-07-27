@@ -7,8 +7,8 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"go-bikeme/location"
-	"go-bikeme/station"
+	"go-bikeme/go-bikeme/location"
+	"go-bikeme/go-bikeme/station"
 	"net/http"
 )
 
@@ -67,7 +67,7 @@ func (service *telOFunService) createStation(soapStation SoapStation) station.St
 
 	stationObject.StationId = soapStation.Id
 	stationObject.StationName = soapStation.EnglishName
-	stationObject.Address = location.Address{"", "", "", "", location.NewLocationFromString(soapStation.Latitude, soapStation.Longitude)}
+	stationObject.Location = location.NewLocationFromString(soapStation.Latitude, soapStation.Longitude, soapStation.EnglishDescription)
 	stationObject.Status = station.Status{soapStation.AvailableBike, soapStation.AvailableDocks}
 
 	return stationObject
