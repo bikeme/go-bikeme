@@ -1,14 +1,15 @@
 package bikeshareservice
 
 import (
+	"appengine"
+	"appengine/urlfetch"
 	"bytes"
 	"encoding/json"
-	"go-bikeme/station"
+	"go-bikeme/go-bikeme/location"
+	"go-bikeme/go-bikeme/station"
 	"net/http"
 	"strconv"
 	"strings"
-	"appengine"
-	"appengine/urlfetch"
 )
 
 const BICING_URL string = "https://www.bicing.cat/es/formmap/getJsonObject"
@@ -18,7 +19,7 @@ type bicingService struct {
 	serviceUrl string
 }
 
-func NewBicingService(context appengine.Context) (*bicingService) {
+func NewBicingService(context appengine.Context) *bicingService {
 	service := bicingService{}
 	service.context = context
 	service.serviceImpl = &service
@@ -63,14 +64,18 @@ func (service *bicingService) createStation(bicingJsonStation bicingJsonStation)
 		availableDocks,
 	}
 
+	stationObject.Location = location.NewLocationFromString(bicingJsonStation.Latitue, bicingJsonStation.Longitude, bicingJsonStation.StationName)
+
 	return stationObject
 }
 
 type bicingJsonStation struct {
-	StationID string `json:"StationID`
-	StationName string `json:"StationName`
-	StationAvailableBikes string `json:"StationAvailableBikes`
-	StationFreeSlot string `json:"StationFreeSlot`
+	StationID             string `json:"StationID"`
+	StationName           string `json:"StationName"`
+	StationAvailableBikes string `json:"StationAvailableBikes"`
+	StationFreeSlot       string `json:"StationFreeSlot"`
+	Latitue               string `json:"AddressGmapsLatitude"`
+	Longitude             string `json:"AddressGmapsLongitude"`
 }
 
 type bicingCommand struct {

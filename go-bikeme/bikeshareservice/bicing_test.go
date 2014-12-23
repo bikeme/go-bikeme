@@ -3,6 +3,7 @@ package bikeshareservice
 import (
 	"fmt"
 	"github.com/stretchrcom/testify/assert"
+	"go-bikeme/location"
 	"go-bikeme/station"
 	"net/http"
 	"net/http/httptest"
@@ -24,10 +25,11 @@ func Test_downloadTweets(t *testing.T) {
 	bicing.serviceUrl = testServer.URL //Set the Bicing service url to the test server Url
 
 	stations, err := bicing.Stations()
-	
+
 	assert.Nil(t, err)
 	assert.Equal(t, len(stations), 2, "Expected 2 stations")
 	assert.Equal(t, stations[0].StationId, "1", "Unexpected station Id")
 	assert.Equal(t, stations[0].StationName, "01 - C GRAN VIA CORTS CATALANES 760", "Unexpected station name")
 	assert.Equal(t, stations[0].Status, station.Status{17, 5}, "Unexpected station status")
+	assert.Equal(t, stations[0].Address.Location, location.Location{41.39795200000000000, 2.180042000000000000}, "Unexpected station location")
 }

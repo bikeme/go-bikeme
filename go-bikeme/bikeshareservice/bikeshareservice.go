@@ -1,12 +1,12 @@
 package bikeshareservice
 
 import (
+	"appengine"
 	"errors"
 	"fmt"
-	"go-bikeme/station"
+	"go-bikeme/go-bikeme/station"
 	"io/ioutil"
 	"net/http"
-	"appengine"
 )
 
 // The Service interface will declare methods required to fetch stations data from a bike share service
@@ -19,7 +19,7 @@ type Service interface {
 // The BaseService abstract type will implement the template for fetching and parsing stations data
 type baseService struct {
 	serviceImpl Service
-	context appengine.Context
+	context     appengine.Context
 }
 
 func (service *baseService) Stations() (stations []station.Station, err error) {

@@ -1,13 +1,14 @@
 package bikeshareservice
 
 import (
+	"appengine"
+	"appengine/urlfetch"
 	"bytes"
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"go-bikeme/station"
-	"appengine"
-	"appengine/urlfetch"
+	"go-bikeme/go-bikeme/location"
+	"go-bikeme/go-bikeme/station"
 	"net/http"
 )
 
@@ -32,7 +33,7 @@ type telOFunService struct {
 	baseService
 }
 
-func NewTelOFunService(context appengine.Context) (*telOFunService) {
+func NewTelOFunService(context appengine.Context) *telOFunService {
 	service := telOFunService{}
 	service.context = context
 	service.serviceImpl = &service
@@ -66,7 +67,7 @@ func (service *telOFunService) createStation(soapStation SoapStation) station.St
 
 	stationObject.StationId = soapStation.Id
 	stationObject.StationName = soapStation.EnglishName
-	stationObject.Position = station.Position{soapStation.Longitude, soapStation.Latitude}
+	stationObject.Location = location.NewLocationFromString(soapStation.Latitude, soapStation.Longitude, soapStation.EnglishDescription)
 	stationObject.Status = station.Status{soapStation.AvailableBike, soapStation.AvailableDocks}
 
 	return stationObject
